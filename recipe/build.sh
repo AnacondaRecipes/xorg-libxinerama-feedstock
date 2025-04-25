@@ -20,10 +20,18 @@ else
 fi
 
 if [ -n "$CYGWIN_PREFIX" ] ; then
+    am_version=1.15 # keep sync'ed with meta.yaml
+    export ACLOCAL=aclocal-$am_version
+    export AUTOMAKE=automake-$am_version
     autoreconf_args=(
+        --force
+        --install
         -I "$mprefix/share/aclocal"
         -I "$BUILD_PREFIX_M/Library/usr/share/aclocal"
     )
+    autoreconf "${autoreconf_args[@]}"
+    # ./configure needs this
+    export CPP=x86_64-w64-mingw32-cpp.exe
 
     # And we need to add the search path that lets libtool find the
     # msys2 stub libraries for ws2_32.
@@ -39,9 +47,15 @@ if [ -n "$CYGWIN_PREFIX" ] ; then
             export LDFLAGS="$LDFLAGS -L$win_path"
         fi
     done
+    
+    # Needed to get X11/X.h
+    export CFLAGS="$CFLAGS -I$LIBRARY_PREFIX_U/include"
 else
     # Get an updated config.sub and config.guess
     cp $BUILD_PREFIX/share/gnuconfig/config.* .
+    
+    export LC_ALL=C
+    export LANG=C
 
     # for other platforms we just need to reconf to get the correct achitecture
     libtoolize --force
