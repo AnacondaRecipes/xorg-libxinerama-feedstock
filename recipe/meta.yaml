@@ -35,6 +35,7 @@ requirements:
     - autoconf                     # [not win]
     - automake                     # [not win]
     - libtool                      # [not win]
+    - xorg-util-macros
   host:
     - xorg-util-macros
     - xorg-libx11
