@@ -33,7 +33,7 @@ requirements:
     - {{ compiler('m2w64_c') }}    # [win]
     - {{ compiler('m2w64_cxx') }}  # [win]
     - autoconf                     # [not win]
-    - automake {{ am_version }}    # [not win]
+    - automake                     # [not win]
     - libtool                      # [not win]
   host:
     - xorg-util-macros
