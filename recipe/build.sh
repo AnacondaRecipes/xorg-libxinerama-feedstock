@@ -43,15 +43,19 @@ else
     # Get an updated config.sub and config.guess
     cp $BUILD_PREFIX/share/gnuconfig/config.* .
 
-    autoreconf_args=(
-        -I "${PREFIX}/share/aclocal"
-        -I "${BUILD_PREFIX}/share/aclocal"
-    )
+    # for other platforms we just need to reconf to get the correct achitecture
+    libtoolize --force
+    aclocal -I $PREFIX/share/aclocal -I $BUILD_PREFIX/share/aclocal
+    autoheader
+    autoconf
+    automake --force-missing --add-missing --include-deps
+    export CONFIG_FLAGS="--build=${BUILD}"
 fi
 
-am_version=1.15 # keep sync'ed with am_version in meta.yaml
-export ACLOCAL=aclocal-$am_version
-export AUTOMAKE=automake-$am_version
+if [[ "$(uname)" == "Darwin" ]]; then
+    export CPP=clang-cpp
+    ln -s $BUILD_PREFIX/bin/clang-cpp $BUILD_PREFIX/bin/cpp
+fi
 
 autoreconf --force --verbose --install "${autoreconf_args[@]}"
 
@@ -63,6 +67,11 @@ configure_args=(
     --disable-selective-werror
     --disable-silent-rules
 )
+
+# Unix domain sockets aren't gonna work on Windows
+if [ -n "$CYGWIN_PREFIX" ] ; then
+    configure_args+=(--disable-unix-transport)
+fi
 
 if [[ "${CONDA_BUILD_CROSS_COMPILATION}" == "1" ]]; then
     export xorg_cv_malloc0_returns_null=yes
