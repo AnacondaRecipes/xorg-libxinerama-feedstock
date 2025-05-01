@@ -1,13 +1,2 @@
 channels:
-  - https://staging.continuum.io/prefect/fs/xorg-util-macros-feedstock/pr1/57947fd
-  - https://staging.continuum.io/prefect/fs/xorg-xorgproto-feedstock/pr1/1a9e774
-  - https://staging.continuum.io/prefect/fs/xorg-xtrans-feedstock/pr1/99f935d
-  - https://staging.continuum.io/prefect/fs/libxcb-feedstock/pr2/03e85d7
-  - https://staging.continuum.io/prefect/fs/xorg-kbproto-feedstock/pr1/e318043
-  - https://staging.continuum.io/prefect/fs/xorg-xextproto-feedstock/pr1/73f21fc
-  - https://staging.continuum.io/prefect/fs/xorg-inputproto-feedstock/pr1/9c31ca8
-  - https://staging.continuum.io/prefect/fs/xorg-libxau-feedstock/pr1/1de3d48
-  - https://staging.continuum.io/prefect/fs/xorg-libxdmcp-feedstock/pr1/0d454f7
-  - https://staging.continuum.io/prefect/fs/xorg-libx11-feedstock/pr1/7d18d1c
-  - https://staging.continuum.io/prefect/fs/xorg-xproto-feedstock/pr1/169e144
   - https://staging.continuum.io/prefect/fs/xorg-libxext-feedstock/pr1/445fe00

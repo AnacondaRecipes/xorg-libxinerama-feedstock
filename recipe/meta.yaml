@@ -2,7 +2,6 @@
 {% set xorg_category = "lib" %}
 {% set xorg_name = "libXinerama" %}
 {% set name = "xorg-" ~ xorg_name %}
-{% set am_version = "1.15" %} # keep synchronized with build.sh
 
 package:
   name: {{ name | lower }}
@@ -51,6 +50,8 @@ test:
 
 about:
   home: https://gitlab.freedesktop.org/xorg/lib/libxinerama
+  dev_url: https://gitlab.freedesktop.org/xorg/lib/libxinerama
+  doc_url: https://gitlab.freedesktop.org/xorg/lib/libxinerama
   license: MIT
   license_family: MIT
   license_file: COPYING
