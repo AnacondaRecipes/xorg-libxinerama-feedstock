@@ -47,8 +47,8 @@ test:
   commands:
     {% set lib_idents = [ "Xinerama" ] %}
     {% for lib_ident in lib_idents %}
-    - test -f $PREFIX/lib/lib{{ lib_ident }}${SHLIB_EXT}   
-    - if not exist %LIBRARY_LIB%/lib{{ lib_ident }}.a exit /b 1    # [win]                   # [unix]
+    - test -f $PREFIX/lib/lib{{ lib_ident }}${SHLIB_EXT}           # [unix]
+    - if not exist %LIBRARY_LIB%/lib{{ lib_ident }}.a exit /b 1    # [win]
     {% endfor %}
 
 about:
