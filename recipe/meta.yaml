@@ -2,7 +2,6 @@
 {% set xorg_category = "lib" %}
 {% set xorg_name = "libXinerama" %}
 {% set name = "xorg-" ~ xorg_name %}
-{% set am_version = "1.16" %} # keep synchronized with build.sh
 
 package:
   name: {{ name | lower }}
@@ -14,6 +13,8 @@ source:
 
 build:
   number: 1
+  # xorg-libxdmcp, libxcb, libx11 aren't available on Windows because their dependencies clash with m2/msys2 and mingw64/ucrt64 toolchains.
+  skip: true  # [win]
   run_exports:
     - {{ pin_subpackage('xorg-libxinerama', max_pin='x.x') }}
 
@@ -30,13 +31,12 @@ requirements:
     - m2-make                      # [win]
     - {{ compiler('c') }}          # [not win]
     - {{ compiler('cxx') }}        # [not win]
-    - {{ stdlib('c') }}            # [not win]
     - {{ compiler('m2w64_c') }}    # [win]
     - {{ compiler('m2w64_cxx') }}  # [win]
-    - {{ stdlib('m2w64_c') }}      # [win]
     - autoconf                     # [not win]
-    - automake {{ am_version }}    # [not win]
+    - automake                     # [not win]
     - libtool                      # [not win]
+    - xorg-util-macros
   host:
     - xorg-util-macros
     - xorg-libx11
@@ -47,13 +47,14 @@ test:
   commands:
     {% set lib_idents = [ "Xinerama" ] %}
     {% for lib_ident in lib_idents %}
-    - test -f $PREFIX/lib/lib{{ lib_ident }}${SHLIB_EXT}                      # [unix]
-    - if not exist %PREFIX%/Library/lib/lib{{ lib_ident }}.dll.a exit /b 1    # [win]
-    - if not exist %PREFIX%/Library/bin/msys-{{ lib_ident }}-*.dll exit /b 1  # [win]
+    - test -f $PREFIX/lib/lib{{ lib_ident }}${SHLIB_EXT}           # [unix]
+    - if not exist %LIBRARY_LIB%/lib{{ lib_ident }}.a exit /b 1    # [win]
     {% endfor %}
 
 about:
   home: https://gitlab.freedesktop.org/xorg/lib/libxinerama
+  dev_url: https://gitlab.freedesktop.org/xorg/lib/libxinerama
+  doc_url: https://gitlab.freedesktop.org/xorg/lib/libxinerama
   license: MIT
   license_family: MIT
   license_file: COPYING

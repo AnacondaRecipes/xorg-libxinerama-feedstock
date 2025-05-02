@@ -1,6 +1,8 @@
 :: Trailing semicolon in this variable as set by current (2017/01)
 :: conda-build breaks us. Manual fix:
 set "MSYS2_ARG_CONV_EXCL=/AI;/AL;/OUT;/out"
+:: Set CYGWIN_PREFIX to trigger Windows-specific section in build.sh
+set "CYGWIN_PREFIX=1"
 :: Delegate to the Unixy script. We need to translate the key path variables
 :: to be Unix-y rather than Windows-y, though.
 set "saved_recipe_dir=%RECIPE_DIR%"
