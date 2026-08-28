@@ -27,6 +27,7 @@ requirements:
     - autoconf
     - automake
     - libtool
+    - xorg-util-macros
   host:
     - xorg-util-macros ==1.20.2
     - xorg-libx11 {{ xorg_libx11 }}
