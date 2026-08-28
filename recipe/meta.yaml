@@ -1,13 +1,12 @@
+{% set name = "xorg-libXinerama" %}
 {% set version = "1.1.6" %}
-{% set xorg_name = "libXinerama" %}
-{% set name = "xorg-" ~ xorg_name %}
 
 package:
   name: {{ name|lower }}
   version: {{ version }}
 
 source:
-  url: https://www.x.org/releases/individual/lib/{{ xorg_name }}-{{ version }}.tar.xz
+  url: https://www.x.org/releases/individual/lib/{{ name.split('-')[1] }}-{{ version }}.tar.xz
   sha256: d00fc1599c303dc5cbc122b8068bdc7405d6fcb19060f4597fc51bd3a8be51d7
 
 build:
@@ -19,7 +18,7 @@ build:
 
 requirements:
   build:
-    - {{ stdlib('c')}}
+    - {{ stdlib('c') }}
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
     - pkg-config
@@ -28,20 +27,16 @@ requirements:
     - autoconf
     - automake
     - libtool
-    - xorg-util-macros
   host:
-    - xorg-util-macros
-    - xorg-libx11
-    - xorg-libxext
-    - xorg-xorgproto
+    - xorg-util-macros ==1.20.2
+    - xorg-libx11 {{ xorg_libx11 }}
+    - xorg-libxext {{ xorg_libxext }}
+    - xorg-xorgproto {{ xorg_xorgproto }}
 
 test:
   commands:
-    {% set lib_idents = [ "Xinerama" ] %}
-    {% for lib_ident in lib_idents %}
-    - test -f $PREFIX/lib/lib{{ lib_ident }}${SHLIB_EXT}           # [unix]
-    - if not exist %LIBRARY_LIB%/lib{{ lib_ident }}.a exit /b 1    # [win]
-    {% endfor %}
+    - test -f $PREFIX/lib/libXinerama.dylib  # [osx]
+    - test -f $PREFIX/lib/libXinerama.so     # [linux]
 
 about:
   home: https://gitlab.freedesktop.org/xorg/lib/libxinerama
@@ -51,7 +46,8 @@ about:
   license_family: MIT
   license_file: COPYING
   summary: Client library for the Xinerama extension to the X11 protocol.
-
+  description: |
+    Client library for the Xinerama extension to the X11 protocol.
 extra:
   recipe-maintainers:
     - hmaarrfk
