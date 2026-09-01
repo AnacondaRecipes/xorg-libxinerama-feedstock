@@ -1,18 +1,16 @@
-{% set version = "1.1.5" %}
-{% set xorg_category = "lib" %}
-{% set xorg_name = "libXinerama" %}
-{% set name = "xorg-" ~ xorg_name %}
+{% set name = "xorg-libXinerama" %}
+{% set version = "1.1.6" %}
 
 package:
-  name: {{ name | lower }}
+  name: {{ name|lower }}
   version: {{ version }}
 
 source:
-  url: https://www.x.org/releases/individual/{{ xorg_category }}/{{ xorg_name }}-{{ version }}.tar.xz
-  sha256: 5094d1f0fcc1828cb1696d0d39d9e866ae32520c54d01f618f1a3c1e30c2085c
+  url: https://www.x.org/releases/individual/lib/{{ name.split('-')[1] }}-{{ version }}.tar.xz
+  sha256: d00fc1599c303dc5cbc122b8068bdc7405d6fcb19060f4597fc51bd3a8be51d7
 
 build:
-  number: 1
+  number: 0
   # xorg-libxdmcp, libxcb, libx11 aren't available on Windows because their dependencies clash with m2/msys2 and mingw64/ucrt64 toolchains.
   skip: true  # [win]
   run_exports:
@@ -20,36 +18,26 @@ build:
 
 requirements:
   build:
-    - m2-autoconf                  # [win]
-    - m2-automake{{ am_version }}  # [win]
-    - m2-libtool                   # [win]
-    - pkg-config                   # [unix]
-    - m2-pkg-config                # [win]
-    - gnuconfig                    # [unix]
-    - m2-base                      # [win]
-    - make                         # [unix]
-    - m2-make                      # [win]
-    - {{ compiler('c') }}          # [not win]
-    - {{ compiler('cxx') }}        # [not win]
-    - {{ compiler('m2w64_c') }}    # [win]
-    - {{ compiler('m2w64_cxx') }}  # [win]
-    - autoconf                     # [not win]
-    - automake                     # [not win]
-    - libtool                      # [not win]
+    - {{ stdlib('c') }}
+    - {{ compiler('c') }}
+    - {{ compiler('cxx') }}
+    - pkg-config
+    - gnuconfig
+    - make
+    - autoconf
+    - automake
+    - libtool
     - xorg-util-macros
   host:
-    - xorg-util-macros
-    - xorg-libx11
-    - xorg-libxext
-    - xorg-xorgproto
+    - xorg-util-macros ==1.20.2
+    - xorg-libx11 {{ xorg_libx11 }}
+    - xorg-libxext {{ xorg_libxext }}
+    - xorg-xorgproto {{ xorg_xorgproto }}
 
 test:
   commands:
-    {% set lib_idents = [ "Xinerama" ] %}
-    {% for lib_ident in lib_idents %}
-    - test -f $PREFIX/lib/lib{{ lib_ident }}${SHLIB_EXT}           # [unix]
-    - if not exist %LIBRARY_LIB%/lib{{ lib_ident }}.a exit /b 1    # [win]
-    {% endfor %}
+    - test -f $PREFIX/lib/libXinerama.dylib  # [osx]
+    - test -f $PREFIX/lib/libXinerama.so     # [linux]
 
 about:
   home: https://gitlab.freedesktop.org/xorg/lib/libxinerama
@@ -59,7 +47,8 @@ about:
   license_family: MIT
   license_file: COPYING
   summary: Client library for the Xinerama extension to the X11 protocol.
-
+  description: |
+    Client library for the Xinerama extension to the X11 protocol.
 extra:
   recipe-maintainers:
     - hmaarrfk
